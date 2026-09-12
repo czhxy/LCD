@@ -204,7 +204,7 @@ static void st7789_init_display(void)
     vTaskDelay(pdMS_TO_TICKS(120));
     st7789_write_register(0x29, NULL, 0);
 		
-		st7789_fill_color(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1, 0xF800);
+		st7789_fill_color(0, 0, ST7789_WIDTH - 1, ST7789_HEIGHT - 1, 0x0000);
 		st7789_set_backlight(true);
 }
 static bool in_screen_range(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2)

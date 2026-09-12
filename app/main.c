@@ -11,8 +11,7 @@ static void task_entry(void *param)
 {	
 	bsp_init();
 	task_ui();
-	mod_ui_welcome_page_display();
-	mod_ui_main_page_display();
+	task_page();
 	vTaskDelete(NULL);
 }
 int main()

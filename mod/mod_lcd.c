@@ -45,7 +45,7 @@ static void ui_func(void *param)
     ui_message_t msg;
     
     st7789_init();
-    
+   
     while (1)
     {
         xQueueReceive(ui_queue, &msg, portMAX_DELAY);
@@ -81,7 +81,40 @@ void mod_ui_init(void)
     configASSERT(ui_queue);
     xTaskCreate(ui_func, "ui", 1024, NULL, 8, NULL);
 }
+//绘制欢迎页
+static void mod_ui_welcome_page_display(void)
+{
+		const uint16_t color_bg = mkcolor(0, 0, 0);
+    mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
+    mod_ui_draw_image(30, 10, &img_meihua);
+    mod_ui_write_string(60, 200, "Loading...", mkcolor(255, 255, 255), color_bg, &font24_maple_bold);
+}
 
+//绘制主页面
+static void mod_ui_main_page_display(void)
+{
+	const uint16_t color_bg = mkcolor(5, 15, 20);
+  mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
+  mod_ui_draw_image(0, 0, &img_dashboard);
+	mod_ui_write_string(30, 175, "100", mkcolor(255, 255, 255), mkcolor(6, 23, 31), &font24_maple_bold);
+	mod_ui_write_string(103, 175, "200", mkcolor(255, 255, 255), mkcolor(6, 23, 31), &font24_maple_bold);
+	mod_ui_write_string(103, 85, "300", mkcolor(255, 255, 255), mkcolor(5, 15, 20), &font24_maple_bold);
+	mod_ui_write_string(173, 175, "400", mkcolor(255, 255, 255), mkcolor(6, 23, 31), &font24_maple_bold);
+}
+
+static void mod_ui_page_show(void*param)
+{
+	do{
+	mod_ui_welcome_page_display();
+	vTaskDelay(pdMS_TO_TICKS(1000));
+	mod_ui_main_page_display();
+	}while(0);
+	vTaskDelete(NULL);
+}
+void mod_ui_page_init(void)
+{
+	xTaskCreate(mod_ui_page_show, "ui_page", 128, NULL, 9, NULL);
+}
 void mod_ui_fill_color(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color)
 {
     ui_message_t msg;
@@ -128,19 +161,3 @@ void mod_ui_draw_image(uint16_t x, uint16_t y, const image_t *image)
     xQueueSend(ui_queue, &msg, portMAX_DELAY);
 }
 
-//绘制欢迎页
-void mod_ui_welcome_page_display(void)
-{
-		const uint16_t color_bg = mkcolor(0, 0, 0);
-    mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
-    mod_ui_draw_image(30, 10, &img_meihua);
-    mod_ui_write_string(60, 200, "Loading...", mkcolor(255, 255, 255), color_bg, &font24_maple_bold);
-}
-
-//绘制主页面
-void mod_ui_main_page_display(void)
-{
-	const uint16_t color_bg = mkcolor(0, 0, 0);
-  mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
-  mod_ui_draw_image(0, 0, &img_dashboard);
-}
