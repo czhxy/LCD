@@ -23,13 +23,13 @@ static void st7789_gpio_init(void)
 		GPIO_InitTypeDef GPIO_InitStruct;
     GPIO_StructInit(&GPIO_InitStruct);
     
-		//初始化引脚状态：BL默认低，其他默认高
+		// 初始化引脚状态：BL默认低，其他默认高
     GPIO_SetBits(NSS_PORT, NSS_PIN);
 		GPIO_SetBits(DC_PORT, DC_PIN);
 		GPIO_SetBits(BL_PORT, BL_PIN);
     GPIO_ResetBits(BL_PORT, BL_PIN);
     
-		//初始化IO口
+		// 初始化IO口
     GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
     GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStruct.GPIO_Speed = GPIO_High_Speed;
@@ -43,7 +43,7 @@ static void st7789_gpio_init(void)
 		GPIO_InitStruct.GPIO_Pin = BL_PIN;
     GPIO_Init(BL_PORT, &GPIO_InitStruct);
 		
-    //初始化SPI的IO
+    // 初始化SPI的IO
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource3, GPIO_AF_SPI3);
     GPIO_PinAFConfig(GPIOB, GPIO_PinSource5, GPIO_AF_SPI3);
 
@@ -58,7 +58,7 @@ static void st7789_gpio_init(void)
     GPIO_Init(MOSI_PORT, &GPIO_InitStruct);
 }
 
-//时钟42MHz，预分频2得到21MHz的SPI时钟
+// 时钟42MHz，预分频2得到21MHz的SPI时钟
 static void st7789_spi_init(void)
 {
 		SPI_InitTypeDef SPI_InitStruct;
@@ -76,7 +76,7 @@ static void st7789_spi_init(void)
     SPI_Cmd(SPI3, ENABLE);
 }
 
-//DMA初始化：SPI3对应DMA1通道0，流5或流7，这里选择流5
+// DMA初始化：SPI3对应DMA1通道0，流5或流7，这里选择流5
 static void st7789_dma_init(void)
 {
 		DMA_InitTypeDef DMA_InitStruct;
@@ -97,7 +97,7 @@ static void st7789_dma_init(void)
     DMA_Init(DMA1_Stream5, &DMA_InitStruct);
 }
 
-//DMA中断初始化
+// DMA中断初始化
 static void st7789_int_init(void)
 {
 		NVIC_InitTypeDef NVIC_InitStructure;
@@ -113,7 +113,7 @@ static void st7789_set_backlight(bool on)
     GPIO_WriteBit(BL_PORT, BL_PIN, on ? Bit_SET : Bit_RESET);
 }
 static void st7789_init_display(void);
-//lcd初始化
+// lcd初始化
 void st7789_init(void)
 {
 	write_gram_sem = xSemaphoreCreateBinary();
@@ -125,7 +125,7 @@ void st7789_init(void)
 	st7789_init_display();
 }
 
-//向对应寄存器写入数据
+// 向对应寄存器写入数据
 static void st7789_write_register(uint8_t reg, uint8_t data[], uint16_t length)
 {
     SPI_DataSizeConfig(SPI3, SPI_DataSize_8b);
@@ -235,10 +235,10 @@ void st7789_fill_color(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2, uint1
     st7789_write_gram((uint8_t *)&color, pixels * 2, true);
 }
 
-//绘制字符
+// 绘制字符
 static void st7789_draw_font(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *model, uint16_t color, uint16_t bg_color)
 {
-	uint16_t bytes_per_row = (width + 7) / 8;//每行的字节数：1bit为1个像素，8个像素拼成一个字节，不整除则向上取整
+	uint16_t bytes_per_row = (width + 7) / 8;// 每行的字节数：1bit为1个像素，8个像素拼成一个字节，不整除则向上取整
     
     static uint8_t buff[72 * 72 * 2];
     uint8_t *pbuf = buff;
@@ -247,11 +247,11 @@ static void st7789_draw_font(uint16_t x, uint16_t y, uint16_t width, uint16_t he
 		const uint8_t *row_data = model + row * bytes_per_row;
 		for (uint16_t col = 0; col < width; col++)
 		{
-			uint8_t pixel = row_data[col / 8] & (1 << (7 - col % 8));//col/8判断该列在第几个字节，col%8判断字节的第几位
-			//注意这里是倒序的：取模时约定高位在前，即最左边的像素对应字节的最高位bit7
-			//所以第0列对应bit7，第7列对应bit0
-			uint16_t pixel_color = pixel ? color : bg_color;//根据取模bit判断写16bit的前景色还是背景色
-			*pbuf++ = pixel_color & 0xff;//小端存储，pbuf为uint16_t指针，省去一次CPU字节序转换
+			uint8_t pixel = row_data[col / 8] & (1 << (7 - col % 8));// col/8判断该列在第几个字节，col%8判断字节的第几位
+			// 注意这里是倒序的：取模时约定高位在前，即最左边的像素对应字节的最高位bit7
+			// 所以第0列对应bit7，第7列对应bit0
+			uint16_t pixel_color = pixel ? color : bg_color;// 根据取模bit判断写16bit的前景色还是背景色
+			*pbuf++ = pixel_color & 0xff;// 小端存储，pbuf为uint16_t指针，省去一次CPU字节序转换
 			*pbuf++ = (pixel_color >> 8) & 0xff;
 		}
 	}
@@ -259,7 +259,7 @@ static void st7789_draw_font(uint16_t x, uint16_t y, uint16_t width, uint16_t he
     st7789_set_range_and_prepare_gram(x, y, x + width - 1, y + height - 1);
     st7789_write_gram(buff, pbuf - buff, false);
 }
-//取字模地址
+// 取字模地址
 static const uint8_t *ascii_get_model(const char ch, const font_t *font)
 {
     uint16_t bytes_per_row = (font->size / 2 + 7) / 8;
@@ -283,7 +283,7 @@ static const uint8_t *ascii_get_model(const char ch, const font_t *font)
     
     return NULL;
 }
-//写ascii字符
+// 写ascii字符
 static void st7789_write_ascii(uint16_t x, uint16_t y, char ch, uint16_t color, uint16_t bg_color, const font_t *font)
 {
     if (font == NULL)
@@ -296,11 +296,11 @@ static void st7789_write_ascii(uint16_t x, uint16_t y, char ch, uint16_t color, 
     if (ch < 0x20 || ch > 0x7E)
         return;
     
-	const uint8_t *model = ascii_get_model(ch, font);//取字模地址，若有映射则从映射查找
+	const uint8_t *model = ascii_get_model(ch, font);// 取字模地址，若有映射则从映射查找
     if (model)
         st7789_draw_font(x, y, fwidth, fheight, model, color, bg_color);
 }
-//写中文字符
+// 写中文字符
 static void st7789_write_chinese(uint16_t x, uint16_t y, const char *ch, uint16_t color, uint16_t bg_color, const font_t *font)
 {
     if (ch == NULL || font == NULL)
@@ -339,9 +339,9 @@ void st7789_write_string(uint16_t x, uint16_t y, const char *str, uint16_t color
         }
         else if (len == 1)
         {
-            st7789_write_ascii(x, y, *str, color, bg_color, font);//在(x,y)处显示该字符
-            str++;//字符指针后移
-            x += font->size / 2;//横向偏移，即半角宽度
+            st7789_write_ascii(x, y, *str, color, bg_color, font);// 在(x,y)处显示该字符
+            str++;// 字符指针后移
+            x += font->size / 2;// 横向偏移，即半角宽度
         }
         else
         {
@@ -357,7 +357,7 @@ void st7789_write_string(uint16_t x, uint16_t y, const char *str, uint16_t color
 void st7789_draw_image(uint16_t x, uint16_t y, const image_t *image)
 {
     if (x >= ST7789_WIDTH || y >= ST7789_HEIGHT || 
-        x + image->width - 1 >= ST7789_WIDTH || y + image->height + 1 >= ST7789_HEIGHT)
+        x + image->width - 1 >= ST7789_WIDTH || y + image->height - 1 >= ST7789_HEIGHT)
         return;
     
     st7789_set_range_and_prepare_gram(x, y, x + image->width - 1, y + image->height - 1);

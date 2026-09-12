@@ -127,3 +127,20 @@ void mod_ui_draw_image(uint16_t x, uint16_t y, const image_t *image)
     
     xQueueSend(ui_queue, &msg, portMAX_DELAY);
 }
+
+//绘制欢迎页
+void mod_ui_welcome_page_display(void)
+{
+		const uint16_t color_bg = mkcolor(0, 0, 0);
+    mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
+    mod_ui_draw_image(30, 10, &img_meihua);
+    mod_ui_write_string(60, 200, "Loading...", mkcolor(255, 255, 255), color_bg, &font24_maple_bold);
+}
+
+//绘制主页面
+void mod_ui_main_page_display(void)
+{
+	const uint16_t color_bg = mkcolor(0, 0, 0);
+  mod_ui_fill_color(0, 0, UI_WIDTH - 1, UI_HEIGHT - 1, color_bg);
+  mod_ui_draw_image(0, 0, &img_dashboard);
+}

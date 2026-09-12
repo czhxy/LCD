@@ -1,12 +1,12 @@
 #include "bsp_usart.h"
 
-/* ä¸²å£æ¥æ”¶é˜Ÿåˆ—å¥æŸ„ */
+/* ´®¿Ú½ÓÊÕ¶ÓÁĞ¾ä±ú */
 QueueHandle_t xUartRxQueue;
 
-/* printf äº’æ–¥é” */
+/* printf »¥³âËø */
 static SemaphoreHandle_t PrintMutex;
 
-/* DMA æ¥æ”¶ç¼“å†²åŒºï¼ˆDMA è‡ªåŠ¨å¡«å……ï¼Œæ— éœ€ CPU å¹²é¢„ï¼‰ */
+/* DMA ½ÓÊÕ»º³åÇø£¨DMA ×Ô¶¯Ìî³ä£¬ÎŞĞè CPU ¸ÉÔ¤£© */
 uint8_t rxBuf[UART_RX_BUF_SIZE];
 
 void BSP_USART_Init(void)
@@ -43,7 +43,7 @@ void BSP_USART_Init(void)
 		USART_Init(USART1, &USART_InitStructure);
 		USART_Cmd(USART1, ENABLE);
 
-    /* ---- DMA2 Stream2 Channel4ï¼šUSART1 RX ---- */
+    /* ---- DMA2 Stream2 Channel4£ºUSART1 RX ---- */
     DMA_InitTypeDef DMA_InitStructure;
     DMA_StructInit(&DMA_InitStructure);
     DMA_InitStructure.DMA_Channel = DMA_Channel_4;
@@ -61,11 +61,11 @@ void BSP_USART_Init(void)
     DMA_Init(DMA2_Stream2, &DMA_InitStructure);
     DMA_Cmd(DMA2_Stream2, ENABLE);
 
-    /* USART1 æ•°æ®è¯·æ±‚è¿æ¥åˆ° DMA */
+    /* USART1 Êı¾İÇëÇóÁ¬½Óµ½ DMA */
     USART_DMACmd(USART1, USART_DMAReq_Rx, ENABLE);
 
     /* ---- NVIC ---- */
-    /* æ¸…é™¤æ®‹ç•™ä¸­æ–­ï¼Œé˜²æ­¢ FreeRTOS è¿è¡Œæ—¶è§¦å‘ configASSERT */
+    /* Çå³ı²ĞÁôÖĞ¶Ï£¬·ÀÖ¹ FreeRTOS ÔËĞĞÊ±´¥·¢ configASSERT */
     NVIC_ClearPendingIRQ(USART1_IRQn);
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
@@ -74,23 +74,23 @@ void BSP_USART_Init(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    /* åªä½¿èƒ½ IDLE ä¸­æ–­ï¼šDMA æ¬è¿æ•°æ®ï¼Œå¸§ç»“æŸå IDLE è§¦å‘ä¸€æ¬¡ */
+    /* Ö»Ê¹ÄÜ IDLE ÖĞ¶Ï£ºDMA °áÔËÊı¾İ£¬Ö¡½áÊøºó IDLE ´¥·¢Ò»´Î */
     USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
 
-    /* åˆ›å»º printf äº’æ–¥é” */
+    /* ´´½¨ printf »¥³âËø */
     PrintMutex = xSemaphoreCreateMutex();
 }
 
-/* DMA ä¸Šä¸€æ¬¡ NDTR å€¼ï¼ˆCircular æ¨¡å¼ä½ç½®è·Ÿè¸ªï¼‰ */
+/* DMA ÉÏÒ»´Î NDTR Öµ£¨Circular Ä£Ê½Î»ÖÃ¸ú×Ù£© */
 uint16_t dma_last_ndtr = UART_RX_BUF_SIZE;
 
-/* ISR ä¸­è°ƒç”¨ï¼šæ ¹æ® NDTR å˜åŒ–è®¡ç®—å¸§é•¿åº¦ï¼Œæ‹·è´å¹¶å†™å…¥é˜Ÿåˆ— */
+/* ISR ÖĞµ÷ÓÃ£º¸ù¾İ NDTR ±ä»¯¼ÆËãÖ¡³¤¶È£¬¿½±´²¢Ğ´Èë¶ÓÁĞ */
 void UART_RxFlushBufToQueue(BaseType_t *pxHigherPriorityTaskWoken, uint16_t received)
 {
     UartFrame_t frame;
     uint16_t start_pos;
 
-    /* Circular æ¨¡å¼ä¸‹ï¼Œæ–°æ•°æ®ä» 'ä¸Šä¸€æ¬¡ NDTR ä½ç½®' å¼€å§‹ï¼ˆå–æ¨¡é˜²è¾¹ç•Œï¼‰ */
+    /* Circular Ä£Ê½ÏÂ£¬ĞÂÊı¾İ´Ó 'ÉÏÒ»´Î NDTR Î»ÖÃ' ¿ªÊ¼£¨È¡Ä£·À±ß½ç£© */
     start_pos = (UART_RX_BUF_SIZE - dma_last_ndtr) % UART_RX_BUF_SIZE;
     if (start_pos + received <= UART_RX_BUF_SIZE)
     {
@@ -98,7 +98,7 @@ void UART_RxFlushBufToQueue(BaseType_t *pxHigherPriorityTaskWoken, uint16_t rece
     }
     else
     {
-        /* æ•°æ®è·¨ç¼“å†²åŒºæœ«å°¾ï¼Œåˆ†ä¸¤æ®µæ‹·è´ */
+        /* Êı¾İ¿ç»º³åÇøÄ©Î²£¬·ÖÁ½¶Î¿½±´ */
         uint16_t first_part = UART_RX_BUF_SIZE - start_pos;
         memcpy(frame.data, &rxBuf[start_pos], first_part);
         memcpy(frame.data + first_part, rxBuf, received - first_part);
@@ -108,7 +108,7 @@ void UART_RxFlushBufToQueue(BaseType_t *pxHigherPriorityTaskWoken, uint16_t rece
     xQueueSendFromISR(xUartRxQueue, &frame, pxHigherPriorityTaskWoken);
 }
 
-/* ä¸²å£æ¥æ”¶ä»»åŠ¡ï¼šä»é˜Ÿåˆ—è·å–æ•´å¸§æ•°æ®ï¼Œå›æ˜¾ */
+/* ´®¿Ú½ÓÊÕÈÎÎñ£º´Ó¶ÓÁĞ»ñÈ¡ÕûÖ¡Êı¾İ£¬»ØÏÔ */
 void UARTRxTask(void *pvParameters)
 {
     UartFrame_t frame;
@@ -178,7 +178,7 @@ int fputc(int ch, FILE *f)
 	return ch;
 }
 
-/* çº¿ç¨‹å®‰å…¨ printf */
+/* Ïß³Ì°²È« printf */
 void SafePrintf(const char *format, ...)
 {
     va_list args;

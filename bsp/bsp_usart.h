@@ -16,26 +16,26 @@ void UART_SendNumber(uint32_t Number, uint8_t Length);
 int fputc(int ch, FILE *f);
 void SafePrintf(const char *format, ...);
 
-/* DMA æ¥æ”¶ç¼“å†²åŒºå¤§å° */
+/* DMA ½ÓÊÕ»º³åÇø´óĞ¡ */
 #define UART_RX_BUF_SIZE    256
 
-/* å¸§ç»“æ„ä½“ï¼šä¸€å¸§å®Œæ•´æ•°æ® + é•¿åº¦ */
+/* Ö¡½á¹¹Ìå£ºÒ»Ö¡ÍêÕûÊı¾İ + ³¤¶È */
 typedef struct
 {
     uint8_t  data[UART_RX_BUF_SIZE];
     uint16_t len;
 } UartFrame_t;
 
-/* ä¸²å£æ¥æ”¶é˜Ÿåˆ—å¥æŸ„ */
+/* ´®¿Ú½ÓÊÕ¶ÓÁĞ¾ä±ú */
 extern QueueHandle_t xUartRxQueue;
 
-/* ISR ä¸­è°ƒç”¨çš„ flush å‡½æ•° */
+/* ISR ÖĞµ÷ÓÃµÄ flush º¯Êı */
 void UART_RxFlushBufToQueue(BaseType_t *pxHigherPriorityTaskWoken, uint16_t len);
 
-/* ä¸²å£æ¥æ”¶ä»»åŠ¡ */
+/* ´®¿Ú½ÓÊÕÈÎÎñ */
 void UARTRxTask(void *pvParameters);
 
-/* DMA æ¥æ”¶ç¼“å†²åŒºï¼ˆISR éœ€è¦è®¿é—®ï¼‰ */
+/* DMA ½ÓÊÕ»º³åÇø£¨ISR ĞèÒª·ÃÎÊ£© */
 extern uint8_t  rxBuf[UART_RX_BUF_SIZE];
 extern uint16_t dma_last_ndtr;
 

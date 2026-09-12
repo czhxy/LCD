@@ -5,7 +5,7 @@
 
 void BSP_LED_Init(void);
 
-/* LED ä»»åŠ¡å‡½æ•°å£°æ˜ï¼Œä¾› main.c ä¸­ xTaskCreate å¼•ç”¨ */
+/* LED ÈÎÎñº¯ÊıÉùÃ÷£¬¹© main.c ÖĞ xTaskCreate ÒıÓÃ */
 void LEDTask1(void * pvParameters);
 
 #define LED1_Port GPIOC

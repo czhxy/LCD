@@ -429,6 +429,16 @@
               <FileType>5</FileType>
               <FilePath>..\app\image\image.h</FilePath>
             </File>
+            <File>
+              <FileName>img_meihua.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\image\img_meihua.c</FilePath>
+            </File>
+            <File>
+              <FileName>img_dashboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\image\img_dashboard.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -788,6 +798,21 @@
               <FileName>font.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\font\font.h</FilePath>
+            </File>
+            <File>
+              <FileName>font16_maple.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\font\font16_maple.c</FilePath>
+            </File>
+            <File>
+              <FileName>font24_maple_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\font\font24_maple_bold.c</FilePath>
+            </File>
+            <File>
+              <FileName>font32_maple_bold.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\font\font32_maple_bold.c</FilePath>
             </File>
           </Files>
         </Group>

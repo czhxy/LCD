@@ -19,5 +19,6 @@ void mod_ui_init(void);
 void mod_ui_fill_color(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint16_t color);
 void mod_ui_write_string(uint16_t x, uint16_t y, const char *str, uint16_t color, uint16_t bg_color, const font_t *font);
 void mod_ui_draw_image(uint16_t x, uint16_t y, const image_t *image);
-
+void mod_ui_welcome_page_display(void);
+void mod_ui_main_page_display(void);
 #endif 

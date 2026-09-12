@@ -142,9 +142,9 @@ void DebugMon_Handler(void)
 /******************************************************************************/
 
 /**
-  * @brief  USART1 IDLE ä¸­æ–­ï¼ˆDMA Circular æ¨¡å¼ï¼‰ï¼š
-  *         DMA è‡ªåŠ¨å¾ªç¯æ¬è¿å­—èŠ‚åˆ° rxBufï¼ŒIDLE è§¦å‘æ—¶æ ¹æ® NDTR å˜åŒ–è®¡ç®—å¸§é•¿åº¦ï¼Œ
-  *         æ•´å¸§å†™å…¥é˜Ÿåˆ—ã€‚Circular æ¨¡å¼æ— éœ€é‡å¯ DMAã€‚
+  * @brief  USART1 IDLE ÖĞ¶Ï£¨DMA Circular Ä£Ê½£©£º
+  *         DMA ×Ô¶¯Ñ­»·°áÔË×Ö½Úµ½ rxBuf£¬IDLE ´¥·¢Ê±¸ù¾İ NDTR ±ä»¯¼ÆËãÖ¡³¤¶È£¬
+  *         ÕûÖ¡Ğ´Èë¶ÓÁĞ¡£Circular Ä£Ê½ÎŞĞèÖØÆô DMA¡£
   */
 void USART1_IRQHandler(void)
 {
@@ -156,16 +156,16 @@ void USART1_IRQHandler(void)
         uint16_t received;
         uint16_t current_ndtr;
 
-        /* æ¸…é™¤ IDLE æ ‡å¿—ï¼šå…ˆè¯» SRï¼Œå†è¯» DR */
+        /* Çå³ı IDLE ±êÖ¾£ºÏÈ¶Á SR£¬ÔÙ¶Á DR */
         tmp = USART1->SR;
         tmp = USART1->DR;
         (void)tmp;
 
-        /* Circular æ¨¡å¼ï¼šæ¯”è¾ƒ NDTR å˜åŒ–é‡è®¡ç®—æ¥æ”¶å­—èŠ‚æ•° */
+        /* Circular Ä£Ê½£º±È½Ï NDTR ±ä»¯Á¿¼ÆËã½ÓÊÕ×Ö½ÚÊı */
         current_ndtr = DMA_GetCurrDataCounter(DMA2_Stream2);
         if (current_ndtr > dma_last_ndtr)
         {
-            /* DMA ç¯ç»•ï¼ˆç»è¿‡ 0â†’BUF_SIZEï¼‰ï¼šdma_last_ndtr åˆ° 0 + 0 åˆ° current_ndtr */
+            /* DMA »·ÈÆ£¨¾­¹ı 0¡úBUF_SIZE£©£ºdma_last_ndtr µ½ 0 + 0 µ½ current_ndtr */
             received = dma_last_ndtr + (UART_RX_BUF_SIZE - current_ndtr);
         }
         else
@@ -178,7 +178,7 @@ void USART1_IRQHandler(void)
             UART_RxFlushBufToQueue(&xHigherPriorityTaskWoken, received);
         }
 
-        /* æ›´æ–°ä½ç½® */
+        /* ¸üĞÂÎ»ÖÃ */
         dma_last_ndtr = current_ndtr;
     }
 

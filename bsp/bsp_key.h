@@ -5,7 +5,7 @@
 
 void BSP_KEY_Init(void);
 uint8_t BSP_Key_GetState(uint8_t id);
-/* æŒ‰é”®ä»»åŠ¡å‡½æ•°å£°æ˜ï¼Œä¾› main.c ä¸­ xTaskCreate å¼•ç”¨ */
+/* °´¼üÈÎÎñº¯ÊıÉùÃ÷£¬¹© main.c ÖĞ xTaskCreate ÒıÓÃ */
 void KEYTask(void *pvParameters);
 
 #define KEY1_Port GPIOE

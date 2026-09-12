@@ -20,13 +20,13 @@ void BSP_LED_Init(void)
 void LEDTask1(void * pvParameters)
 {
 	(void)pvParameters;
-	GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);  /* ÂàùÂßãÁÜÑÁÅ≠ */
+	GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);  /* ≥ı ºœ®√ */
 
 	while (1)
 	{
-			GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_RESET);  /* ‰∫Æ */
+			GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_RESET);  /* ¡¡ */
 			vTaskDelay(pdMS_TO_TICKS(500));
-			GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);    /* ÁÅ≠ */
+			GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);    /* √ */
 			vTaskDelay(pdMS_TO_TICKS(500));
 	}
 }

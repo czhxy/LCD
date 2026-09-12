@@ -2,7 +2,7 @@
 
 static void bsp_init(void)
 {
-	// ä½¿èƒ½ LCD ç›¸å…³å¤–è®¾æ—¶é’Ÿï¼šGPIOA(CS)/GPIOB(SCK,MOSI)/GPIOD(DC,BL)/DMA1/SPI3
+	// Ê¹ÄÜ LCD Ïà¹ØÍâÉèÊ±ÖÓ£ºGPIOA(CS)/GPIOB(SCK,MOSI)/GPIOD(DC,BL)/DMA1/SPI3
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA | RCC_AHB1Periph_GPIOB |
 	                       RCC_AHB1Periph_GPIOD | RCC_AHB1Periph_DMA1, ENABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_SPI3, ENABLE);
@@ -11,20 +11,22 @@ static void task_entry(void *param)
 {	
 	bsp_init();
 	task_ui();
+	mod_ui_welcome_page_display();
+	mod_ui_main_page_display();
 	vTaskDelete(NULL);
 }
 int main()
 {
-//	/* ---- å¤–è®¾åˆå§‹åŒ– ---- */
+//	/* ---- ÍâÉè³õÊ¼»¯ ---- */
 //	BSP_USART_Init();
 //	BSP_LED_Init();
 		
 //	SafePrintf("FreeRTOS Template\r\n");
 
-//	/* ---- åˆ›å»º FreeRTOS å¯¹è±¡ ---- */
+//	/* ---- ´´½¨ FreeRTOS ¶ÔÏó ---- */
 //	xUartRxQueue = xQueueCreate(8, sizeof(UartFrame_t));
 
-//	/* ---- åˆ›å»º FreeRTOS ä»»åŠ¡ ---- */
+//	/* ---- ´´½¨ FreeRTOS ÈÎÎñ ---- */
 //	if (xUartRxQueue != NULL)
 //	{
 //		xTaskCreate(UARTRxTask, "UART_RX", 256, NULL, 2, NULL);

@@ -7,7 +7,7 @@
 static SemaphoreHandle_t KEY1_Binary = NULL;
 static SemaphoreHandle_t KEY2_Binary = NULL;
 
-/* æŒ‰é”®æ¶ˆæŠ–çŠ¶æ€ä½ï¼Œ0=æœªè§¦å‘ï¼Œ1=å·²è§¦å‘ï¼ˆé˜²é‡å¤ï¼‰ */
+/* °´¼üÏû¶¶×´Ì¬Î»£¬0=Î´´¥·¢£¬1=ÒÑ´¥·¢£¨·ÀÖØ¸´£© */
 static uint8_t key1_debounce = 0;
 static uint8_t key2_debounce = 0;
 
@@ -31,8 +31,8 @@ void BSP_KEY_Init(void)
 }
 
 /**
- * @brief  æŒ‰é”®æ‰«æä»»åŠ¡ï¼Œæ¯ 10ms æ£€æµ‹ä¸€æ¬¡
- * @note   æŒ‰ä¸‹ç¬é—´å³ç»™ä¿¡å·é‡ï¼Œæ¶ˆæŠ–æœºåˆ¶é¿å…é‡å¤è§¦å‘
+ * @brief  °´¼üÉ¨ÃèÈÎÎñ£¬Ã¿ 10ms ¼ì²âÒ»´Î
+ * @note   °´ÏÂË²¼ä¼´¸øĞÅºÅÁ¿£¬Ïû¶¶»úÖÆ±ÜÃâÖØ¸´´¥·¢
  */
 void KEYTask(void * pvParameters)
 {
@@ -40,7 +40,7 @@ void KEYTask(void * pvParameters)
 
 	while (1)
 	{
-		/* KEY1 æ£€æµ‹ï¼šæŒ‰ä¸‹è§¦å‘ï¼Œé‡Šæ”¾å¤ä½ */
+		/* KEY1 ¼ì²â£º°´ÏÂ´¥·¢£¬ÊÍ·Å¸´Î» */
 		if (GPIO_ReadInputDataBit(KEY1_Port, KEY1_Pin) == Bit_RESET)
 		{
 			if (key1_debounce == 0)
@@ -55,10 +55,10 @@ void KEYTask(void * pvParameters)
 		}
 		else
 		{
-			key1_debounce = 0;  /* é‡Šæ”¾åæ¸…é›¶ï¼Œå…è®¸ä¸‹æ¬¡è§¦å‘ */
+			key1_debounce = 0;  /* ÊÍ·ÅºóÇåÁã£¬ÔÊĞíÏÂ´Î´¥·¢ */
 		}
 
-		/* KEY2 æ£€æµ‹ï¼šæŒ‰ä¸‹è§¦å‘ï¼Œé‡Šæ”¾å¤ä½ */
+		/* KEY2 ¼ì²â£º°´ÏÂ´¥·¢£¬ÊÍ·Å¸´Î» */
 		if (GPIO_ReadInputDataBit(KEY2_Port, KEY2_Pin) == Bit_RESET)
 		{
 			if (key2_debounce == 0)
@@ -73,10 +73,10 @@ void KEYTask(void * pvParameters)
 		}
 		else
 		{
-			key2_debounce = 0;  /* é‡Šæ”¾åæ¸…é›¶ï¼Œå…è®¸ä¸‹æ¬¡è§¦å‘ */
+			key2_debounce = 0;  /* ÊÍ·ÅºóÇåÁã£¬ÔÊĞíÏÂ´Î´¥·¢ */
 		}
 
-		vTaskDelay(pdMS_TO_TICKS(10));  /* æ‰«æå‘¨æœŸ */
+		vTaskDelay(pdMS_TO_TICKS(10));  /* É¨ÃèÖÜÆÚ */
 	}
 }
 
