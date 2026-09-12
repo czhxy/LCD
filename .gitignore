@@ -1,0 +1,31 @@
+# ---- Keil MDK 编译产物 ----
+*.o
+*.crf
+*.d
+*.dep
+*.axf
+*.hex
+*.bin
+*.map
+*.lst
+*.lnp
+*.iex
+*.htm
+*.build_log.htm
+
+# ---- Keil 生成目录 ----
+mdk/Objects/
+mdk/Listings/
+
+# ---- Keil 用户界面布局（个人配置，不提交）----
+*.uvguix.*
+
+# ---- J-Link 调试 ----
+JLinkLog.txt
+JLinkSettings.ini
+
+# ---- 编辑器 / 系统 ----
+*.bak
+*.tmp
+.DS_Store
+Thumbs.db
