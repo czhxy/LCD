@@ -5,7 +5,6 @@
 
 void BSP_LED_Init(void)
 {
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
 	GPIO_InitTypeDef GPIO_InitStructure;
 
 	GPIO_StructInit(&GPIO_InitStructure);
@@ -29,5 +28,9 @@ void LEDTask1(void * pvParameters)
 			GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);    /* Ãð */
 			vTaskDelay(pdMS_TO_TICKS(500));
 	}
+}
+void task_led(void)
+{
+	xTaskCreate(LEDTask1, "led_task", 64, NULL, 10, NULL);
 }
 

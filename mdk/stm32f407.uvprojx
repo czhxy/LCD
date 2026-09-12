@@ -515,9 +515,14 @@
           <GroupName>task</GroupName>
           <Files>
             <File>
-              <FileName>ui_task.c</FileName>
+              <FileName>task_uart.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\task\ui_task.c</FilePath>
+              <FilePath>..\task\task_uart.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_ui.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\task\task_ui.c</FilePath>
             </File>
           </Files>
         </Group>
