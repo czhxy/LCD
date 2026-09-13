@@ -19,6 +19,7 @@ void BSP_LED_Init(void)
 void LEDTask1(void * pvParameters)
 {
 	(void)pvParameters;
+	BSP_LED_Init();
 	GPIO_WriteBit(LED1_Port, LED1_Pin, Bit_SET);  /* ³õÊ¼Ï¨Ãð */
 
 	while (1)

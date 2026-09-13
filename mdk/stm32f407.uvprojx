@@ -442,21 +442,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>mod</GroupName>
-          <Files>
-            <File>
-              <FileName>mod_lcd.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\mod\mod_lcd.c</FilePath>
-            </File>
-            <File>
-              <FileName>mod_lcd.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\mod\mod_lcd.h</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>driver</GroupName>
           <Files>
             <File>
@@ -508,6 +493,31 @@
               <FileName>bsp_lcd.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\bsp\bsp_lcd.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>mod</GroupName>
+          <Files>
+            <File>
+              <FileName>mod_lcd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mod\mod_lcd.c</FilePath>
+            </File>
+            <File>
+              <FileName>mod_lcd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mod\mod_lcd.h</FilePath>
+            </File>
+            <File>
+              <FileName>mod_log.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mod\mod_log.c</FilePath>
+            </File>
+            <File>
+              <FileName>mod_log.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mod\mod_log.h</FilePath>
             </File>
           </Files>
         </Group>

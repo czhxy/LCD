@@ -74,53 +74,11 @@ void BSP_USART_Init(void)
     /* 只使能 IDLE 中断：DMA 搬运数据，帧结束后 IDLE 触发一次 */
     USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
 
-    /* 创建 printf 互斥锁 */
-    PrintMutex = xSemaphoreCreateMutex();
 }
 
-/* DMA 上一次 NDTR 值（Circular 模式位置跟踪） */
-uint16_t dma_last_ndtr = UART_RX_BUF_SIZE;
 
-/* ISR 中调用：根据 NDTR 变化计算帧长度，拷贝并写入队列 */
-void UART_RxFlushBufToQueue(BaseType_t *pxHigherPriorityTaskWoken, uint16_t received)
-{
-    UartFrame_t frame;
-    uint16_t start_pos;
 
-    /* Circular 模式下，新数据从 '上一次 NDTR 位置' 开始（取模防边界） */
-    start_pos = (UART_RX_BUF_SIZE - dma_last_ndtr) % UART_RX_BUF_SIZE;
-    if (start_pos + received <= UART_RX_BUF_SIZE)
-    {
-        memcpy(frame.data, &rxBuf[start_pos], received);
-    }
-    else
-    {
-        /* 数据跨缓冲区末尾，分两段拷贝 */
-        uint16_t first_part = UART_RX_BUF_SIZE - start_pos;
-        memcpy(frame.data, &rxBuf[start_pos], first_part);
-        memcpy(frame.data + first_part, rxBuf, received - first_part);
-    }
 
-    frame.len = received;
-    xQueueSendFromISR(xUartRxQueue, &frame, pxHigherPriorityTaskWoken);
-}
-
-/* 串口接收任务：从队列获取整帧数据，回显 */
-void UARTRxTask(void *pvParameters)
-{
-    UartFrame_t frame;
-    (void)pvParameters;
-
-    SafePrintf("UART RX Task Started\r\n");
-
-    while (1)
-    {
-        if (xQueueReceive(xUartRxQueue, &frame, portMAX_DELAY) == pdPASS)
-        {
-            UART_SendArray(frame.data, frame.len);
-        }
-    }
-}
 
 void UART_SendByte(uint8_t Byte)
 {
