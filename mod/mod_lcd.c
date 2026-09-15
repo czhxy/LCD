@@ -1,6 +1,7 @@
 #include "mod_lcd.h"
 #include "mod_log.h"
 #include <string.h>
+SemaphoreHandle_t xSemUIFinsh;
 typedef enum
 {
     UI_ACTION_FILL_COLOR,
@@ -82,7 +83,9 @@ void mod_ui_init(void)
 {
     ui_queue = xQueueCreate(16, sizeof(ui_message_t));
     configASSERT(ui_queue);
-    xTaskCreate(ui_func, "ui", 1024, NULL, 8, NULL);
+    xTaskCreate(ui_func, "ui", 512, NULL, 8, NULL);
+		xSemUIFinsh = xSemaphoreCreateBinary();
+		
 }
 //ªÊ÷∆ª∂”≠“≥
 static void mod_ui_welcome_page_display(void)
@@ -111,7 +114,9 @@ static void mod_ui_page_show(void*param)
 	mod_ui_welcome_page_display();
 	vTaskDelay(pdMS_TO_TICKS(1000));
 	mod_ui_main_page_display();
+	vTaskDelay(pdMS_TO_TICKS(500));
 	}while(0);
+	xSemaphoreGive(xSemUIFinsh);
 	vTaskDelete(NULL);
 }
 void mod_ui_page_init(void)
@@ -136,7 +141,7 @@ void mod_ui_write_string(uint16_t x, uint16_t y, const char *str, uint16_t color
     char *pstr = pvPortMalloc(strlen(str) + 1);
     if (pstr == NULL)
     {
-        printf("ui write string malloc failed: %s", str);
+        PrintStr("ui write string malloc failed\r\n");
         return;
     }
     strcpy(pstr, str);

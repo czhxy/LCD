@@ -1,5 +1,5 @@
-#ifndef __TASK_TIME_H
-#define __TASK_TIME_H
+#ifndef __TASK_RTC_H
+#define __TASK_RTC_H
 #include "mod_rtc.h"
 
 void task_rtc(void);

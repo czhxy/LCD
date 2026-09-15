@@ -1,8 +1,4 @@
 #include "workqueue.h"
-#include <stdint.h>
-#include "FreeRTOS.h"
-#include "task.h"
-#include "queue.h"
 
 typedef struct
 {
@@ -12,7 +8,7 @@ typedef struct
 
 static QueueHandle_t work_msg_queue;
 
-static void work_func(void *param)
+static void workqueue_entry(void *param)
 {
     work_message_t msg;
     
@@ -27,14 +23,35 @@ void workqueue_init(void)
 {
     work_msg_queue = xQueueCreate(16, sizeof(work_message_t));
     configASSERT(work_msg_queue);
-    xTaskCreate(work_func, "workqueue", 1024, NULL, 5, NULL);
+    xTaskCreate(workqueue_entry, "workqueue", 256, NULL, 5, NULL);
 }
 /*
 将work回调函数和真正的执行函数打包（这里当作参数）送入队列
 */
-void workqueue_run(work_t work, void *param)
+void workqueue_send(work_t work, void *param)
 {
     configASSERT(work_msg_queue);
     work_message_t msg = { work, param };
     xQueueSend(work_msg_queue, &msg, portMAX_DELAY);
+}
+
+
+
+void app_work(void *param)
+{
+    app_job_t job = (app_job_t)param;//把真正的执行函数转为函数指针
+    job();//调用真正的业务函数
+}
+
+void work_timer_cb(TimerHandle_t timer)//重任务投入队列
+{
+    app_job_t job = (app_job_t)pvTimerGetTimerID(timer);//获取TimerID（实际是void*类型的真正执行函数）
+    workqueue_send(app_work, job);//发到workqueue_entry中，内部执行msg.work(msg.param)，也就是app_work(job)
+																	//在app_work中才执行job()，也就是真正执行回调函数的地方
+}
+
+void app_timer_cb(TimerHandle_t timer)//软任务直接跑
+{
+    app_job_t job = (app_job_t)pvTimerGetTimerID(timer);
+    job();
 }

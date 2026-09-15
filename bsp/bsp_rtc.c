@@ -8,7 +8,7 @@
 #define RTC_GET_RETRY_MAX   5
 
 /* 逐字段比较：结构体可能存在填充字节，用 memcmp 比较整体会误判 */
-static uint8_t rtc_datetime_equal(const rtc_data_time_t *a, const rtc_data_time_t *b)
+static uint8_t rtc_datetime_equal(const rtc_date_time_t *a, const rtc_date_time_t *b)
 {
 	return (uint8_t)((a->year    == b->year)   &&
 	                 (a->month   == b->month)  &&
@@ -21,7 +21,7 @@ static uint8_t rtc_datetime_equal(const rtc_data_time_t *a, const rtc_data_time_
 
 /* 范围校验：USE_FULL_ASSERT 未开启时 assert_param 是空宏，非法值会被
    RTC_BIN2BCD 静默截断后写进寄存器，读回值永远不等于设定值 */
-static uint8_t rtc_datetime_is_valid(const rtc_data_time_t *dt)
+static uint8_t rtc_datetime_is_valid(const rtc_date_time_t *dt)
 {
 	if (dt == NULL)                          return 0;
 	if (dt->year < 2000 || dt->year > 2099)  return 0;   /* RTC_Year 只有 0~99 */
@@ -44,7 +44,7 @@ void bsp_rtc_init(void)
 	RTC_Init(&RTC_InitStructure);
 }
 
-static void rtc_set_time_once(const rtc_data_time_t *date_time)
+static void rtc_set_time_once(const rtc_date_time_t *date_time)
 {
 		RTC_DateTypeDef date;
 		RTC_TimeTypeDef time;
@@ -63,7 +63,7 @@ static void rtc_set_time_once(const rtc_data_time_t *date_time)
 		RTC_SetDate(RTC_Format_BIN, &date);
 		RTC_SetTime(RTC_Format_BIN, &time);
 }
-static void rtc_get_time_once(rtc_data_time_t *date_time)
+static void rtc_get_time_once(rtc_date_time_t *date_time)
 {
 		RTC_DateTypeDef date;
     RTC_TimeTypeDef time;
@@ -84,9 +84,9 @@ static void rtc_get_time_once(rtc_data_time_t *date_time)
     date_time->minute = time.RTC_Minutes;
     date_time->second = time.RTC_Seconds;
 }
-void bsp_rtc_set_time(const rtc_data_time_t *date_time)
+void bsp_rtc_set_time(const rtc_date_time_t *date_time)
 {
-	rtc_data_time_t rtime;
+	rtc_date_time_t rtime;
 	uint8_t i;
 
 	/* 参数非法就直接放弃：写进去的值会被截断，读回永远对不上，
@@ -107,10 +107,10 @@ void bsp_rtc_set_time(const rtc_data_time_t *date_time)
 	}
 }
 
-void bsp_rtc_get_time(rtc_data_time_t *date_time)
+void bsp_rtc_get_time(rtc_date_time_t *date_time)
 {
-	rtc_data_time_t time1;
-	rtc_data_time_t time2;
+	rtc_date_time_t time1;
+	rtc_date_time_t time2;
 	uint8_t i;
 
 	if (date_time == NULL)

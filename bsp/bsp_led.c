@@ -32,6 +32,6 @@ void LEDTask1(void * pvParameters)
 }
 void task_led(void)
 {
-	xTaskCreate(LEDTask1, "led_task", 64, NULL, 10, NULL);
+	xTaskCreate(LEDTask1, "led_task", 64, NULL, 3, NULL);
 }
 

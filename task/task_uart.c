@@ -20,7 +20,7 @@ static void task_uart_entry(void *param)
 
 void task_uart(void)
 {
-	xTaskCreate(task_uart_entry, "UART", 128, NULL, 8, NULL);
+	xTaskCreate(task_uart_entry, "UART", 256, NULL, 8, NULL);
 }
 
 

@@ -3,14 +3,14 @@
 
 #include "stm32f4xx.h"
 #include <stdio.h>
-#include "Delay.h"
-#include "bsp_led.h"
-#include "bsp_key.h"
 #include "task_ui.h"
 #include "task_uart.h"
-#include "task_time.h"
-#include "bsp_usart.h"
+#include "task_rtc.h"
+#include "task_timers.h"
+#include "task_monitor.h"
+#include "workqueue.h"
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "bsp_led.h"
 #endif

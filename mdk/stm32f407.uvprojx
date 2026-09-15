@@ -549,6 +549,16 @@
               <FileType>5</FileType>
               <FilePath>..\mod\mod_rtc.h</FilePath>
             </File>
+            <File>
+              <FileName>mod_led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mod\mod_led.c</FilePath>
+            </File>
+            <File>
+              <FileName>mod_led.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mod\mod_led.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -565,9 +575,19 @@
               <FilePath>..\task\task_ui.c</FilePath>
             </File>
             <File>
-              <FileName>task_time.c</FileName>
+              <FileName>task_rtc.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\task\task_time.c</FilePath>
+              <FilePath>..\task\task_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_timers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\task\task_timers.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_monitor.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\task\task_monitor.c</FilePath>
             </File>
           </Files>
         </Group>
