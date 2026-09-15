@@ -3,5 +3,5 @@
 
 #include "bsp_usart.h"
 void mod_log_init(void);
-
+void PrintStr(const char * Str);
 #endif

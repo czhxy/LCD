@@ -494,6 +494,16 @@
               <FileType>5</FileType>
               <FilePath>..\bsp\bsp_lcd.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\bsp\bsp_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_rtc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\bsp\bsp_rtc.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -519,6 +529,16 @@
               <FileType>5</FileType>
               <FilePath>..\mod\mod_log.h</FilePath>
             </File>
+            <File>
+              <FileName>mod_rtc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\mod\mod_rtc.c</FilePath>
+            </File>
+            <File>
+              <FileName>mod_rtc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\mod\mod_rtc.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -533,6 +553,11 @@
               <FileName>task_ui.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\task\task_ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_time.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\task\task_time.c</FilePath>
             </File>
           </Files>
         </Group>

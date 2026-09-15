@@ -1,17 +1,14 @@
 #include "bsp_usart.h"
 
-/* ´®¿Ú½ÓÊÕ¶ÓÁÐ¾ä±ú */
+/* ï¿½ï¿½ï¿½Ú½ï¿½ï¿½Õ¶ï¿½ï¿½Ð¾ï¿½ï¿½ */
 QueueHandle_t xUartRxQueue;
 
-/* printf »¥³âËø */
-static SemaphoreHandle_t PrintMutex;
 
-/* DMA ½ÓÊÕ»º³åÇø£¨DMA ×Ô¶¯Ìî³ä£¬ÎÞÐè CPU ¸ÉÔ¤£© */
+/* DMA ï¿½ï¿½ï¿½Õ»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½DMA ï¿½Ô¶ï¿½ï¿½ï¿½ä£¬ï¿½ï¿½ï¿½ï¿½ CPU ï¿½ï¿½Ô¤ï¿½ï¿½ */
 uint8_t rxBuf[UART_RX_BUF_SIZE];
 
 void BSP_USART_Init(void)
 {
-
 	/* ---- GPIO ---- */
 	GPIO_InitTypeDef GPIO_InitStructure;
 	GPIO_StructInit(&GPIO_InitStructure);
@@ -40,7 +37,7 @@ void BSP_USART_Init(void)
 		USART_Init(USART1, &USART_InitStructure);
 		USART_Cmd(USART1, ENABLE);
 
-    /* ---- DMA2 Stream2 Channel4£ºUSART1 RX ---- */
+    /* ---- DMA2 Stream2 Channel4ï¿½ï¿½USART1 RX ---- */
     DMA_InitTypeDef DMA_InitStructure;
     DMA_StructInit(&DMA_InitStructure);
     DMA_InitStructure.DMA_Channel = DMA_Channel_4;
@@ -58,11 +55,11 @@ void BSP_USART_Init(void)
     DMA_Init(DMA2_Stream2, &DMA_InitStructure);
     DMA_Cmd(DMA2_Stream2, ENABLE);
 
-    /* USART1 Êý¾ÝÇëÇóÁ¬½Óµ½ DMA */
+    /* USART1 ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Óµï¿½ DMA */
     USART_DMACmd(USART1, USART_DMAReq_Rx, ENABLE);
 
     /* ---- NVIC ---- */
-    /* Çå³ý²ÐÁôÖÐ¶Ï£¬·ÀÖ¹ FreeRTOS ÔËÐÐÊ±´¥·¢ configASSERT */
+    /* ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ð¶Ï£ï¿½ï¿½ï¿½Ö¹ FreeRTOS ï¿½ï¿½ï¿½ï¿½Ê±ï¿½ï¿½ï¿½ï¿½ configASSERT */
     NVIC_ClearPendingIRQ(USART1_IRQn);
     NVIC_InitTypeDef NVIC_InitStructure;
     NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
@@ -71,7 +68,7 @@ void BSP_USART_Init(void)
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    /* Ö»Ê¹ÄÜ IDLE ÖÐ¶Ï£ºDMA °áÔËÊý¾Ý£¬Ö¡½áÊøºó IDLE ´¥·¢Ò»´Î */
+    /* Ö»Ê¹ï¿½ï¿½ IDLE ï¿½Ð¶Ï£ï¿½DMA ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ý£ï¿½Ö¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ IDLE ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ */
     USART_ITConfig(USART1, USART_IT_IDLE, ENABLE);
 
 }
@@ -89,23 +86,19 @@ void UART_SendByte(uint8_t Byte)
 void UART_SendArray(uint8_t *Array, uint16_t Length)
 {
 	uint16_t i;
-	xSemaphoreTake(PrintMutex, portMAX_DELAY);
 	for (i = 0; i < Length; i ++)
 	{
 		UART_SendByte(Array[i]);
 	}
-	xSemaphoreGive(PrintMutex);
 }
 
 void UART_SendString(char *String)
 {
 	uint8_t i;
-	xSemaphoreTake(PrintMutex, portMAX_DELAY);
 	for (i = 0; String[i] != '\0'; i ++)
 	{
 		UART_SendByte(String[i]);
 	}
-	xSemaphoreGive(PrintMutex);
 }
 
 static uint32_t UART_Pow(uint32_t X, uint32_t Y)
@@ -133,13 +126,3 @@ int fputc(int ch, FILE *f)
 	return ch;
 }
 
-/* Ïß³Ì°²È« printf */
-void SafePrintf(const char *format, ...)
-{
-    va_list args;
-    va_start(args, format);
-    xSemaphoreTake(PrintMutex, portMAX_DELAY);
-    vprintf(format, args);
-    xSemaphoreGive(PrintMutex);
-    va_end(args);
-}

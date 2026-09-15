@@ -1,5 +1,6 @@
 #include "mod_lcd.h"
-
+#include "mod_log.h"
+#include <string.h>
 typedef enum
 {
     UI_ACTION_FILL_COLOR,
@@ -43,9 +44,9 @@ static QueueHandle_t ui_queue;
 static void ui_func(void *param)
 {
     ui_message_t msg;
-    
+    (void)param;
     st7789_init();
-   
+		char buf[64]={0};
     while (1)
     {
         xQueueReceive(ui_queue, &msg, portMAX_DELAY);
@@ -69,7 +70,9 @@ static void ui_func(void *param)
                               msg.draw_image.image);
             break;
         default:
-            printf("Unknown UI action: %d\n", msg.action);
+						
+						snprintf(buf,sizeof(buf),"Unknown UI action: %d\n", msg.action);
+            PrintStr(buf);
             break;
         }
     }

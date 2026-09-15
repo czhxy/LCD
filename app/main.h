@@ -8,6 +8,7 @@
 #include "bsp_key.h"
 #include "task_ui.h"
 #include "task_uart.h"
+#include "task_time.h"
 #include "bsp_usart.h"
 #include "FreeRTOS.h"
 #include "task.h"

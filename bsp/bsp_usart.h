@@ -14,7 +14,6 @@ void UART_SendArray(uint8_t *Array, uint16_t Length);
 void UART_SendString(char *String);
 void UART_SendNumber(uint32_t Number, uint8_t Length);
 int fputc(int ch, FILE *f);
-void SafePrintf(const char *format, ...);
 
 /* DMA 接收缓冲区大小 */
 #define UART_RX_BUF_SIZE    256
