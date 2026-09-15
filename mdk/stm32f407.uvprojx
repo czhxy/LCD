@@ -419,6 +419,16 @@
               <FileType>1</FileType>
               <FilePath>..\firmware\cmsis\device\stm32f4xx_it.c</FilePath>
             </File>
+            <File>
+              <FileName>workqueue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\app\workqueue.c</FilePath>
+            </File>
+            <File>
+              <FileName>workqueue.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\app\workqueue.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

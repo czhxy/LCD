@@ -16,7 +16,7 @@ void main_page_redraw_time(rtc_data_time_t *time)
     char str[6];
     char comma = (time->second % 2 == 0) ? ':' : ' ';
     snprintf(str, sizeof(str), "%02u%c%02u", time->hour, comma, time->minute);
-    mod_ui_write_string(93, 11, str,mkcolor(255, 255, 255), mkcolor(6, 23, 31), &font24_maple_bold);
+    mod_ui_write_string(93, 11, str,mkcolor(255, 255, 255), mkcolor(5,8,13), &font24_maple_bold);
 }
 static void task_time_entry(void *param)
 {
