@@ -2,6 +2,7 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "mod_log.h"
+#include "mod_lcd.h"
 /* 备份域复位（首次上电 / 彻底掉电）后写入的默认时间：2026-09-15 15:50:30 星期二 */
 static const rtc_data_time_t default_time = {
 	.year = 2026, .month = 9, .day = 15,
@@ -10,7 +11,13 @@ static const rtc_data_time_t default_time = {
 
 /* 备份寄存器中标记“时间已初始化过”的魔数 */
 #define RTC_TIME_INIT_MAGIC   0xA5A5
-
+void main_page_redraw_time(rtc_data_time_t *time)
+{
+    char str[6];
+    char comma = (time->second % 2 == 0) ? ':' : ' ';
+    snprintf(str, sizeof(str), "%02u%c%02u", time->hour, comma, time->minute);
+    mod_ui_write_string(93, 11, str,mkcolor(255, 255, 255), mkcolor(6, 23, 31), &font24_maple_bold);
+}
 static void task_time_entry(void *param)
 {
 	rtc_data_time_t now_time = {0};
@@ -39,6 +46,8 @@ static void task_time_entry(void *param)
          now_time.weekday);
 
 		PrintStr(buf);
+		main_page_redraw_time(&now_time);
+		
 		vTaskDelay(pdMS_TO_TICKS(1000));
 	}
 }
